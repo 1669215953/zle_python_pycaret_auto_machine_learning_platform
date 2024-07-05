@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.dialog-container {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.config-item {
+  display: none;
+}
+
+.chat-panel {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  border-left: 3px solid #888;
+  background-color: #fefefe;
+  padding: 20px;
+  overflow: auto;
+}
+
+.chat-toggle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: transparent;
+  font-size: 2em;
+}
+
+.chat-panel-open .chat-toggle {
+  right: 310px; /* width of chat-panel plus a small gap */
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>Popup Config Dialog</h2>
+
+<button onclick="openDialog()">Open Dialog</button>
+
+<div id="dialog" class="dialog-container">
+  <div class="dialog-content">
+    <span onclick="closeDialog()" class="close">&times;</span>
+    
+    <div id="config-1" class="config-item">
+      <h3>Configuration 1</h3>
+      <!-- You can add your specific configuration controls here -->
+      <button onclick="switchConfig('config-1', 'config-2')">Next</button>
+    </div>
+
+    <div id="config-2" class="config-item">
+      <h3>Configuration 2</h3>
+      <!-- You can add your specific configuration controls here -->
+      <button onclick="switchConfig('config-2', 'config-3')">Next</button>
+    </div>
+
+    <div id="config-3" class="config-item">
+      <h3>Configuration 3</h3>
+      <!-- You can add your specific configuration controls here -->
+      <button onclick="closeDialog()">Finish</button>
+    </div>
+
+  </div>
+</div>
+
+<div id="chat-panel" class="chat-panel">
+  <!-- Your chat content can go here -->
+  <h3>AI Chat</h3>
+  <p>This is a chat panel. You can add your messages here.</p>
+</div>
+
+<button id="chat-toggle-button" onclick="toggleChatPanel()" class="chat-toggle">&lt;</button>
+
+<script>
+var dialog = document.getElementById('dialog');
+var chat_panel = document.getElementById('chat-panel');
+var chat_toggle_button = document.getElementById('chat-toggle-button');
+
+function openDialog() {
+  document.getElementById('config-1').style.display = 'block';
+  dialog.style.display = 'block';
+}
+
+function closeDialog() {
+  var configs = document.getElementsByClassName('config-item');
+  for(var i = 0; i < configs.length; i++) {
+    configs[i].style.display = 'none';
+  }
+  dialog.style.display = 'none';
+}
+
+function switchConfig(oldConfig, newConfig) {
+  document.getElementById(oldConfig).style.display = 'none';
+  document.getElementById(newConfig).style.display = 'block';
+}
+
+function toggleChatPanel() {
+  var body = document.body;
+  if(chat_panel.style.display === 'none') {
+    chat_panel.style.display = 'block';
+    chat_toggle_button.innerHTML = '&gt;';
+    body.classList.add('chat-panel-open');
+  } else {
+    chat_panel.style.display = 'none';
+    chat_toggle_button.innerHTML = '&lt;';
+    body.classList.remove('chat-panel-open');
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Poppins:wght@200;300&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background: #4b5c66;
+}
+.container {
+	--light-color: #fff;
+	height: 580px;
+	width: 300px; /* 设置固定宽度，您可以根据需要调整这个值 */
+	background: var(--light-color);
+	bottom: 50px;
+	right: 10px;
+	box-shadow: 0px 0px 15px 0px black;
+  z-index: 10;
+}
+@media screen and (min-width:440px) {
+	.container {
+		position: fixed;
+	}
+}
+.chat-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0px 30px;
+  background-color: #0652c0;
+  color: var(--light-color);
+  font-size: 1.5rem;
+}
+
+.chat-header .logo {
+  height: 35px;
+  width: 35px;
+  box-shadow: 0px 0px 10px 0px black;
+}
+.chat-header img {
+  height: 100%;
+  width: 100%;
+}
+.chat-header .title {
+  padding-left: 10px;
+}
+.chat-body {
+  height: 465px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  align-items: flex-end;
+  overflow-y: auto;
+}
+.chat-input {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc;
+}
+.input-sec {
+  flex: 9;
+}
+.send {
+  flex: 1;
+  padding-right: 4px;
+}
+#txtInput {
+  line-height: 30px;
+  padding: 8px 10px;
+  border: none;
+  outline: none;
+  caret-color: black;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.chatbot-message,
+.user-message {
+    padding: 8px;
+    background: #ccc;
+    margin: 5px;
+    max-width: 90%; /* 限制最大宽度为容器的 90% */
+    word-wrap: break-word; /* 允许单词在边界处断行 */
+    border-radius: 10px 3px 10px 10px;
+}
+
+.chatbot-message {
+  background: #0652c0;
+  color: var(--light-color);
+  align-self: flex-start;
+  border-radius: 10px 10px 3px 10px;
+}
+.page-footer {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  color: black;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.page-footer a {
+  display: flex;
+  margin-left: 4px;
+}
+.touxiang{
+	bottom: 0px;
+	width:30px;
+	height:30px;
+}
+
+
+
+/* 退出按钮样式 */
+.close-btn {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    /* 更多样式 */
+}
+.show-chat-btn {
+	position: fixed; /* 固定定位，相对于浏览器窗口 */
+	right: 10px; /* 距离窗口右侧10px */
+	top: 50%; /* 距离窗口顶部50%，也可以调整为希望的任何位置 */
+	z-index: 1000; /* 确保悬浮按钮在最上层 */
+	cursor: pointer; /* 将鼠标指针变成手指形状，指示这个元素是可点击的 */
+  }

@@ -1,0 +1,29 @@
+{
+    "host": {
+        "execute": "localhost"
+    },
+    "user": {
+        "execute": "root"
+    },
+    "password": {
+        "execute": "qwer"
+    },
+    "database": {
+        "execute": "ML"
+    },
+    "PLOTS_DIR": {
+        "execute": "metrics"
+    },
+    "UPLOAD_DIR": {
+        "execute": "userfiles"
+    },
+    "MODEL_DIR": {
+        "execute": "models"
+    },
+    "DEFAULT_DIR": {
+        "execute": "default_ML"
+    },
+    "PREDICT_DIR": {
+        "execute": "predict"
+    }
+}

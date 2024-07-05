@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Gallery</title>
+  <style>
+    .image-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .image-container img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-container"></div>
+
+  <script>
+    fetch('/api/metrics/fileList')
+      .then(response => response.json())
+      .then(data => {
+        const imageContainer = document.querySelector('.image-container');
+
+        data.forEach(filename => {
+          const img = document.createElement('img');
+          img.src = `/metrics/${filename}`; // 请求图片接口
+          imageContainer.appendChild(img);
+        });
+      });
+  </script>
+</body>
+</html>

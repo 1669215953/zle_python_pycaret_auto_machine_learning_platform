@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.chat-panel {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 70%;
+  border-left: 3px solid #888;
+  background-color: #fefefe;
+  padding: 20px;
+  overflow: auto;
+}
+
+.chat-box {
+  height: 300px;
+  width: 300px;
+  overflow: auto;
+}
+
+.chat-input {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div id="chat-panel" class="chat-panel">
+  <h3>AI Chat</h3>
+  <div class="chat-box" id="chat-box">
+  </div>
+  <input type="text" class="chat-input" id="chat-input">
+  <button id="send-btn">Send</button>
+</div>
+
+<script>
+function appendMessage(text, sender) {
+  var chatBox = document.getElementById('chat-box');
+  var pElement = document.createElement('p');
+  pElement.textContent = sender + ': ' + text;
+  chatBox.appendChild(pElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+document.getElementById('send-btn').addEventListener('click', function() {
+  sendMessage();
+});
+
+function sendMessage() {
+  var input = document.getElementById('chat-input');  
+  var text = input.value;
+  input.value = '';
+
+  appendMessage(text, 'You');
+
+  var xhr_user_message = new XMLHttpRequest();
+  xhr_user_message.open("POST", '/get_user', true);
+  xhr_user_message.setRequestHeader('Content-Type', 'application/json');
+  xhr_user_message.send(JSON.stringify({
+      message: text
+  }));
+
+  var xhr_ai_response = new XMLHttpRequest();
+  xhr_ai_response.open('GET', '/get_AI?message=' + text, true);
+  xhr_ai_response.onload = function() {
+    if (this.status == 200){
+      var response = JSON.parse(this.responseText);
+      var message = response.ai_response.content;
+      appendMessage(message, 'AI');
+    }
+  };
+  xhr_ai_response.send(null);
+}
+
+document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) { // 13 is ENTER keyCode
+        e.preventDefault();
+        sendMessage();
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="../static/js/core/jquery.min.js"></script>
+  <script src="../static/js/axios.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <!-- layui css -->
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" />
+  <!-- layui js -->
+  <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js"></script>
+  <!-- 下载地址 https://gitee.com/maplemei/xm-select/attach_files/591517/download/xm-select-v1.2.2.zip -->
+  <script src="https://maplemei.gitee.io/xm-select/xm-select.js" type="text/javascript" charset="utf-8"></script>
+
+<style>
+.chat-panel {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 70%;
+  border-left: 3px solid #888;
+  background-color: #fefefe;
+  padding: 20px;
+  overflow: auto;
+}
+
+.chat-box {
+  height: 300px;
+  width: 300px;
+  overflow: auto;
+}
+
+.chat-input {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.step {
+  color: black; /* 默认颜色 */
+}
+
+.step.current {
+  color: red; /* 当前步骤的颜色 */
+}
+</style>
+<script src="../static/js/mytools.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/mycss.css">
+<!--这css和js实现 class为mycheck_button的checkbox的切换按钮-->>
+
+</head>
+<body>
+<h2>Popup Config Dialog</h2>
+
+<button onclick="openDialog('config-1')">Open Dialog</button>
+
+<div id="dialog" class="dialog-container" >
+  <div class="dialog-content">
+    <span onclick="closeDialog()" class="close">&times;</span>
+    <div class="steps-container">
+      <span id="step-1" class="step">Step 1</span>
+      <span id="step-2" class="step">Step 2</span>
+      <span id="step-3" class="step">Step 3</span>
+    </div>
+    <div id="config-1" class="config-item">
+      <h3 class="config-heading">Configuration 1</h3>
+      <form id="myForm1"></form>
+      <button onclick="switchConfig('config-1', 'config-2')">Next</button>
+    </div>
+
+    <div id="config-2" class="config-item">
+      <h3 class="config-heading">Configuration 2</h3>
+      <form id="myForm2"></form>
+      <button onclick="switchConfig('config-2', 'config-1')">Previous</button>
+      <button onclick="switchConfig('config-2', 'config-3')">Next</button>
+    </div>
+
+    <div id="config-3" class="config-item">
+      <h3 class="config-heading">Configuration 3</h3>
+      <form id="myForm3"></form>
+      <button onclick="switchConfig('config-3', 'config-2')">Previous</button>
+      <button id="sendButton"onclick="closeDialog()">Finish</button>
+    </div>
+  </div>
+</div>
+
+<div id="chat-panel" class="chat-panel">
+  <h3>AI Chat</h3>
+  <div class="chat-box" id="chat-box">
+  </div>
+  <input type="text" class="chat-input" id="chat-input">
+  <button id="send-btn">Send</button>
+</div>
+
+<script>
+var dialog = document.getElementById('dialog');
+var formStates = {};
+
+// AI chat related functions
+function appendMessage(text, sender) {
+  var chatBox = document.getElementById('chat-box');
+  var pElement = document.createElement('p');
+  pElement.textContent = sender + ': ' + text;
+  chatBox.appendChild(pElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+document.getElementById('send-btn').addEventListener('click', function() {
+  sendMessage();
+});
+
+function sendMessage() {
+  var input = document.getElementById('chat-input');  
+  var text = input.value;
+  input.value = '';
+
+  appendMessage(text, 'You');
+
+  var xhr_user_message = new XMLHttpRequest();
+  xhr_user_message.open("POST", '/get_user', true);
+  xhr_user_message.setRequestHeader('Content-Type', 'application/json');
+  xhr_user_message.send(JSON.stringify({
+      message: text
+  }));
+
+  var xhr_ai_response = new XMLHttpRequest();
+  xhr_ai_response.open('GET', '/get_AI?message=' + text, true);
+  xhr_ai_response.onload = function() {
+    if (this.status == 200){
+      var response = JSON.parse(this.responseText);
+      var message = response.ai_response.content;
+      appendMessage(message, 'AI');
+    }
+  };
+  xhr_ai_response.send(null);
+}
+
+document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) { // 13 is ENTER keyCode
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// Config Dialog related functions
+function openDialog(currentConfig) {
+  if (!formStates[currentConfig]) {
+    formStates[currentConfig] = {};
+  }
+  var headings = document.getElementsByClassName('step');
+  for (var i = 0; i < headings.length; i++) {
+    if (headings[i].classList.contains('current')) {
+      headings[i].classList.remove('current');
+
+    }
+  }  
+  document.getElementById(currentConfig).style.display = 'block';
+  dialog.style.display = 'block';
+  document.getElementById('step-1').classList.add('current'); 
+  loadFormState(currentConfig);
+}
+
+function closeDialog() {
+  var configs = document.getElementsByClassName('config-item');
+  for(var i = 0; i < configs.length; i++) {
+    configs[i].style.display = 'none';
+  }
+  dialog.style.display = 'none';
+  // 加载 JSON 文件
+  axios.defaults.baseURL = 'http://127.0.0.1:5000';
+  // 当按钮被点击时发送 JSON 数据
+  // 加载 JSON 文件
+  axios.get('./test.json')
+    .then(function(response) {
+        var jsonData = response.data;
+        
+        // 使用 axios 发送 POST 请求
+        axios.post('/api/get-userparams', JSON.stringify(jsonData), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function(response) {
+            console.log('Response:', response);
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    })
+    .catch(function(error) {
+        console.error('Error:', error);
+    });
+
+}
+
+function switchConfig(oldConfig, newConfig) {
+  saveFormState(oldConfig);
+  document.getElementById(oldConfig).style.display = 'none';
+  document.getElementById(newConfig).style.display = 'block';
+  var headings = document.getElementsByClassName('step');
+  for (var i = 0; i < headings.length; i++) {
+    if (headings[i].classList.contains('current')) {
+      headings[i].classList.remove('current');
+      var nextIndex = (i + 1) % headings.length;
+      headings[nextIndex].classList.add('current');
+      break;
+    }
+  }  
+  loadFormState(newConfig);
+}
+
+
+function saveFormState(config) {
+  var inputs = document.getElementById(config).querySelectorAll('input, select');
+
+  formStates[config] = {};
+
+  inputs.forEach(input => {
+    formStates[config][input.name] = input.value;
+  });
+}
+
+function loadFormState(config) {
+  if (formStates[config]) {
+    var inputs = document.getElementById(config).querySelectorAll('input, select');
+
+    inputs.forEach(input => {
+      if (formStates[config][input.name] !== undefined) {
+        input.value = formStates[config][input.name];
+      }
+    });
+  }
+}
+
+// JSON Data
+var jsonData = [
+  {
+    "AUC": {
+      "mode":"input",
+      "default":"88.1"
+    },
+    "Accuracy":{
+      "mode": "checkbox",
+      "default":"checked"
+    },
+    "F1": {
+      "mode": "select",
+      "select_item":["one","two","three"],
+      "default":"one"
+    }
+  },
+  {
+    "Precision": {
+      "mode":"input",
+      "default":"0.9"
+    },
+    "Recall":{
+      "mode": "checkbox",
+      "default":"checked"
+    },
+    "F2": {
+      "mode": "select",
+      "select_item":["four","five","six"],
+      "default":"four"
+    }
+  },
+  {
+    "MCC": {
+      "mode":"input",
+      "default":"0.1"
+    },
+    "Kappa":{
+      "mode": "checkbox",
+      "default":"checked"
+    },
+    "F3": {
+      "mode": "mul-select",
+      "select_item":["qwe","ee","rq"],
+      "default":"seven"
+    }
+  }
+];
+
+for (var i = 0; i < jsonData.length; i++) {
+  var form = document.getElementById('myForm' + (i+1));
+  var data = jsonData[i];
+
+  for (var key in data) {
+    var div = document.createElement('div');
+
+    var label = document.createElement('label');
+    label.textContent = key;
+    div.appendChild(label);
+
+    switch (data[key].mode) {
+      case 'input':
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'form' + (i+1) + '-' + key;
+        input.value = data[key].default;
+        div.appendChild(input);
+        break;
+      case 'checkbox':
+        var input = document.createElement('input');
+        input.type = 'checkbox';
+        input.name = 'form' + (i+1) + '-' + key;
+        input.className ="mycheck_button" 
+        input.checked = (data[key].default === 'checked') ? true : false;
+        div.appendChild(input);
+        break;
+      case 'select':
+        var select = document.createElement('select');
+        select.name = 'form' + (i+1) + '-' + key;
+        for (var j = 0; j < data[key].select_item.length; j++) {
+          var option = document.createElement('option');
+          option.value = data[key].select_item[j];
+          option.text = data[key].select_item[j];
+          if (data[key].select_item[j] === data[key].default) {
+            option.selected = true;
+          }
+          select.appendChild(option);
+        }
+        div.appendChild(select);
+        break;
+        case 'mul-select':
+        var select = document.createElement('select');
+        select.name = 'form' + (i + 1) + '-' + key;
+        select.multiple = true;
+        data[key].select_item.forEach(function (item) {
+          var option = document.createElement('option');
+          option.value = item;
+          option.text = item;
+          if (item === data[key].default || (Array.isArray(data[key].default) && data[key].default.includes(item))) {
+            option.selected = true;
+          }
+          select.appendChild(option);
+        });
+        div.appendChild(select);
+        break;
+        
+
+    }
+
+    form.appendChild(div);
+  }
+}
+closeDialog()
+</script>
+</body>
+</html>

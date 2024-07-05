@@ -1,0 +1,131 @@
+.mycheck_button {
+    position: relative;
+    width: 60px;
+    height: 26px;
+    -webkit-appearance: none;
+    background: #ddd;
+    outline: none;
+    border-radius: 50px;
+    transition: background-color .5s;
+}
+
+.mycheck_button::before {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    background: #fff;
+    transform: scale(1.1);
+    transition: .5s;
+}
+
+.mycheck_button:checked {
+    background: #84b52f;
+}
+
+.mycheck_button:checked::before {
+    left: 32px;
+}
+
+/*----------------------------------------参数窗口----------------------------------------------*/
+#dialog
+{
+  position: fixed; /* 设置悬浮框的定位方式为固定定位 */
+  z-index:1;
+
+}
+
+#txtInput {
+  line-height: 30px;
+  padding: 8px 10px;
+  border: none;
+  outline: none;
+  caret-color: black;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.chatbot-message,
+.user-message {
+    padding: 8px;
+    background: #ccc;
+    margin: 5px;
+    max-width: 90%; /* 限制最大宽度为容器的 90% */
+    word-wrap: break-word; /* 允许单词在边界处断行 */
+    border-radius: 10px 3px 10px 10px;
+}
+
+.chatbot-message {
+  background: #0652c0;
+  color: var(--light-color);
+  align-self: flex-start;
+  border-radius: 10px 10px 3px 10px;
+}
+.page-footer {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  color: black;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.page-footer a {
+  display: flex;
+  margin-left: 4px;
+}
+.touxiang{
+	bottom: 0px;
+	width:30px;
+	height:30px;
+}
+
+
+
+/* 退出按钮样式 */
+.close-btn {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    /* 更多样式 */
+}
+
+/* 显示聊天按钮样式 */
+.show-chat-btn {
+    display: none; /* 初始隐藏 */
+    position: fixed;
+    right: 10px;
+    bottom: 50%%;
+    cursor: pointer;
+    /* 更多样式 */
+}
+
+/*参数窗口*/
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: auto;
+  border: 1px solid #888;
+  width: 80%;
+  width: 300px;   /* 窗口的宽度 */
+  height: 200px;  /* 窗口的高度 */
+  position: fixed; /* 使用固定定位，让窗口浮动 */
+  top: 50%;       /* 从屏幕顶部开始定位的位置，50% 表示屏幕中央 */
+  left: 50%;      /* 从屏幕左边开始定位的位置，50% 表示屏幕中央 */
+  transform: translate(-50%, -50%); /* 使用 transform 属性做位置调整，使窗口的中心在屏幕中央 */
+  border-radius: 10px; /* 窗口的边角圆形 */
+  padding: 20px; /* 内边距 */
+}
+
+.step {
+  color: black; /* 默认颜色 */
+}
+
+.step.current {
+  color: red; /* 当前步骤的颜色 */
+}

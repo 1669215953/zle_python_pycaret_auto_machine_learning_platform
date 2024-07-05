@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>实践工具 | 机器学习</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <meta name="keywords" content="工具" />
+    <meta name="description" content="工具" /> 
+    <meta name="author" content="海拥(https://haiyong.site)" />
+    <meta name="copyright" content="海拥(https://haiyong.site)" />
+    <link rel="stylesheet" type="text/css" href="../static/css/mycss.css">
+    <script src="../static/js/mytools.js"></script>
+    <script src="../static/js/core/jquery.min.js"></script>
+    <script src="../static/js/axios.min.js"></script>
+    <link rel="icon" href="https://wanghao221.github.io/Weather.io/icon.png">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,800&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../static/css/main_uploader.css">
+        <script src="../static\js\ML.js" defer></script>
+    	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?a9430a37066911650e26adadcc42798a";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script></head>
+    
+    <body onload="myFunction()">
+        <div id="loading"></div>
+        <div class="cont">
+            <div class="one">
+                <h1>💻 machine learning platform 🏆</h1>
+            </div>
+        </div>
+<!-----------------------------AI对话----------------------------------->
+
+       <style>
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Poppins:wght@200;300&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background: #4b5c66;
+}
+.container {
+	--light-color: #fff;
+	height: 580px;
+	width: 300px; /* 设置固定宽度，您可以根据需要调整这个值 */
+	background: var(--light-color);
+	bottom: 50px;
+	right: 10px;
+	box-shadow: 0px 0px 15px 0px black;
+}
+@media screen and (min-width:440px) {
+	.container {
+		position: fixed;
+	}
+}
+.chat-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0px 30px;
+  background-color: #0652c0;
+  color: var(--light-color);
+  font-size: 1.5rem;
+}
+
+.chat-header .logo {
+  height: 35px;
+  width: 35px;
+  box-shadow: 0px 0px 10px 0px black;
+}
+.chat-header img {
+  height: 100%;
+  width: 100%;
+}
+.chat-header .title {
+  padding-left: 10px;
+}
+.chat-body {
+  height: 465px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  align-items: flex-end;
+  overflow-y: auto;
+}
+.chat-input {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc;
+}
+.input-sec {
+  flex: 9;
+}
+.send {
+  flex: 1;
+  padding-right: 4px;
+}
+
+#dialog
+{
+  position: fixed; /* 设置悬浮框的定位方式为固定定位 */
+
+}
+
+#txtInput {
+  line-height: 30px;
+  padding: 8px 10px;
+  border: none;
+  outline: none;
+  caret-color: black;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.chatbot-message,
+.user-message {
+    padding: 8px;
+    background: #ccc;
+    margin: 5px;
+    max-width: 90%; /* 限制最大宽度为容器的 90% */
+    word-wrap: break-word; /* 允许单词在边界处断行 */
+    border-radius: 10px 3px 10px 10px;
+}
+
+.chatbot-message {
+  background: #0652c0;
+  color: var(--light-color);
+  align-self: flex-start;
+  border-radius: 10px 10px 3px 10px;
+}
+.page-footer {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  color: black;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.page-footer a {
+  display: flex;
+  margin-left: 4px;
+}
+.touxiang{
+	bottom: 0px;
+	width:30px;
+	height:30px;
+}
+
+
+
+/* 退出按钮样式 */
+.close-btn {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    /* 更多样式 */
+}
+
+/* 显示聊天按钮样式 */
+.show-chat-btn {
+    display: none; /* 初始隐藏 */
+    position: fixed;
+    right: 10px;
+    bottom: 50%%;
+    cursor: pointer;
+    /* 更多样式 */
+}
+
+/*参数窗口*/
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.step {
+  color: black; /* 默认颜色 */
+}
+
+.step.current {
+  color: red; /* 当前步骤的颜色 */
+}
+
+</style>
+
+<script>
+    var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "https://hm.baidu.com/hm.js?a9430a37066911650e26adadcc42798a";
+var s = document.getElementsByTagName("script")[0]; 
+s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+<div class="show-chat-btn">聊天</div>
+
+<div class="container">
+    <div class="chat-header">
+        <div class="close-btn">X</div> <!-- 添加退出按钮 -->
+
+        <div class="logo">
+            <img src="https://code.haiyong.site/wp-content/uploads/2022/10/logo.jpg" alt="cwt" />
+        </div>
+        <div class="title">简易版Chat GPT</div>
+    </div>
+
+    <div class="chat-body"></div>
+    <div class="chat-input">
+        <div class="input-sec">
+            <input type="text" id="txtInput" placeholder="在这里写" autofocus />
+        </div>
+        <div class="send">
+            <img src="https://haiyong.site/img/svg/send.svg" alt="send" />
+        </div>
+    </div>
+</div>
+<!-----------------------------参数配置表----------------------------------->
+
+        <div id="dialog" class="dialog-container" >
+            <div class="dialog-content">
+              <span onclick="closeDialog()" class="close">&times;</span>
+              <div class="steps-container">
+                <span id="step-1" class="step">Step 1</span>
+                <span id="step-2" class="step">Step 2</span>
+                <span id="step-3" class="step">Step 3</span>
+              </div>
+              <div id="config-1" class="config-item">
+                <h3 class="config-heading">Configuration 1</h3>
+                <form id="myForm1"></form>
+                <button onclick="switchConfig('config-1', 'config-2')">Next</button>
+              </div>
+          
+              <div id="config-2" class="config-item">
+                <h3 class="config-heading">Configuration 2</h3>
+                <form id="myForm2"></form>
+                <button onclick="switchConfig('config-2', 'config-1')">Previous</button>
+                <button onclick="switchConfig('config-2', 'config-3')">Next</button>
+              </div>
+          
+              <div id="config-3" class="config-item">
+                <h3 class="config-heading">Configuration 3</h3>
+                <form id="myForm3"></form>
+                <button onclick="switchConfig('config-3', 'config-2')">Previous</button>
+                <button id="sendButton"onclick="finishDialog()">Finish</button>
+              </div>
+            </div>
+          </div>
+<!-----------------------------参数配置表----------------------------------->
+
+        <div class="two">
+            <div class="card">
+                <div class="search">
+                    <select class="search-bar" id="dropdown">
+                        <option value="1">泰坦尼克号</option>
+                        <option value="2">房价预测</option>
+                        <option value="3">手写数字识别</option>
+                        <option value="4">TalkingData广告反欺诈挑战</option>
+                        <option value="5">恶意评论分类</option>
+                        <option value="6">桑坦德银行客户满意度预测</option>
+                        <option value="7">共享单车需求预测</option>
+                        <option value="8">防患于未然犯罪类型的预测</option>
+                    </select>
+                    <button onclick="openDialog('config-1')">
+                        <svg t="1702213340552" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1589" width="1.8em" height="1.8em"><path d="M953.670963 128.41984c13.6192-16.13824 37.45792-18.87232 54.38464-6.2464s21.08416 36.25984 9.49248 53.9136l-2.44736 3.2768-594.176 716.81024c-13.99808 16.896-39.00416 19.33312-55.99232 5.45792l-3.03104-2.74432L11.529523 547.13344c-14.8992-15.07328-15.42144-39.15776-1.19808-54.86592 14.22336-15.69792 38.2464-17.55136 54.71232-4.21888l3.03104 2.7136 319.3856 320.6656 566.21056-683.008z m0 0" fill="#1296db" p-id="1590"></path></svg>                    </button>
+                </div>
+                <div class="search">
+                    <input type="file" class="search-bar" id="fileUpload" name="fileUpload" style="display: none" multiple />
+                    <button type="button" onclick="document.getElementById('fileUpload').click();">
+                        <svg t="1702209251099" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="945" width="2.5em" height="2.5em"><path d="M475.428571 874.057143q0 1.792 0.182858 3.584t0.512 3.547428q0.365714 1.755429 0.877714 3.474286 0.530286 1.718857 1.206857 3.382857 0.694857 1.645714 1.536 3.254857 0.841143 1.572571 1.846857 3.072 1.005714 1.499429 2.139429 2.889143 1.133714 1.389714 2.413714 2.651429 1.28 1.28 2.651429 2.413714 1.389714 1.133714 2.889142 2.139429 1.499429 0.987429 3.072 1.828571 1.590857 0.859429 3.254858 1.554286 1.645714 0.676571 3.364571 1.206857 1.737143 0.512 3.474286 0.859429 1.773714 0.365714 3.565714 0.548571 1.792 0.164571 3.584 0.164571t3.584-0.182857q1.792-0.182857 3.547429-0.530285 1.755429-0.347429 3.474285-0.859429 1.737143-0.530286 3.382857-1.206857 1.664-0.694857 3.254858-1.536 1.572571-0.859429 3.072-1.846857 1.499429-1.005714 2.889142-2.139429 1.389714-1.152 2.651429-2.413714 1.28-1.28 2.413714-2.651429 1.133714-1.389714 2.139429-2.889143 1.005714-1.499429 1.828571-3.072 0.859429-1.590857 1.554286-3.254857 0.676571-1.645714 1.206857-3.382857 0.512-1.718857 0.877714-3.474286 0.347429-1.755429 0.512-3.547428 0.182857-1.792 0.182858-3.584V519.808l85.723428 74.477714q2.486857 2.157714 5.302857 3.84 2.816 1.645714 5.888 2.816 3.072 1.133714 6.290286 1.718857 3.236571 0.585143 6.509714 0.585143 1.792 0 3.584-0.182857 1.792-0.164571 3.547429-0.512 1.755429-0.365714 3.474286-0.877714 1.737143-0.512 3.382857-1.206857 1.664-0.694857 3.254857-1.536 1.572571-0.841143 3.072-1.828572 1.499429-1.005714 2.889143-2.157714 1.389714-1.133714 2.651428-2.413714 1.28-1.261714 2.413715-2.651429 1.133714-1.389714 2.139428-2.889143 1.005714-1.481143 1.828572-3.072 0.859429-1.590857 1.554285-3.236571 0.676571-1.664 1.206857-3.382857 0.512-1.718857 0.877715-3.474286 0.347429-1.773714 0.512-3.565714 0.182857-1.773714 0.182857-3.584 0-3.913143-0.841143-7.753143-0.822857-3.84-2.450286-7.405714-1.645714-3.584-3.986285-6.729143t-5.302858-5.705143l-144.566857-125.622857q-13.476571-11.702857-31.323428-11.392-17.846857 0.310857-30.902857 12.470857l-134.692572 125.366857q-2.742857 2.56-4.937143 5.650286-2.176 3.072-3.657143 6.528-1.517714 3.456-2.285714 7.131428-0.768 3.693714-0.768 7.460572 0 1.810286 0.182857 3.584 0.182857 1.792 0.512 3.547428 0.365714 1.773714 0.877715 3.474286 0.530286 1.737143 1.206857 3.401143 0.694857 1.645714 1.536 3.236571 0.841143 1.590857 1.846857 3.072 1.005714 1.499429 2.139428 2.889143 1.133714 1.389714 2.413715 2.651429 1.28 1.28 2.651428 2.413714 1.389714 1.152 2.889143 2.139429 1.499429 1.005714 3.072 1.846857 1.590857 0.841143 3.254857 1.536 1.645714 0.694857 3.364572 1.206857 1.737143 0.530286 3.474285 0.877714 1.773714 0.347429 3.565715 0.530286 1.792 0.182857 3.584 0.182857 3.437714 0 6.820571-0.658286 3.364571-0.64 6.582857-1.901714 3.181714-1.243429 6.089143-3.090286 2.925714-1.828571 5.430857-4.169143L475.428571 514.505143V874.057143z m-151.222857-160.182857q-36.48 13.897143-75.52 13.897143-43.136 0-82.578285-16.694858-38.070857-16.091429-67.401143-45.44-29.348571-29.330286-45.458286-67.401142Q36.571429 558.774857 36.571429 515.657143q0-43.154286 16.676571-82.578286 16.109714-38.070857 45.458286-67.419428 29.330286-29.330286 67.401143-45.44 34.962286-14.793143 72.813714-16.457143 32.768-73.106286 99.638857-120.502857Q416.475429 128 512 128q54.4 0 105.106286 18.980571 49.261714 18.450286 89.398857 52.662858 40.118857 34.194286 66.157714 79.890285 18.432 32.365714 28.269714 67.931429 36.681143 0.676571 70.363429 14.921143 34.139429 14.445714 60.434286 40.740571 26.294857 26.313143 40.740571 60.434286Q987.428571 498.944 987.428571 537.6q0 38.674286-14.957714 74.038857-14.445714 34.139429-40.740571 60.434286-26.294857 26.294857-60.434286 40.740571-35.364571 14.957714-74.038857 14.957715-43.52 0-82.688-18.925715-2.322286-1.097143-4.443429-2.541714-2.139429-1.426286-4.041143-3.126857-1.92-1.718857-3.565714-3.675429-1.645714-1.974857-3.017143-4.132571-1.371429-2.194286-2.413714-4.516572-1.060571-2.358857-1.755429-4.809142-0.731429-2.468571-1.078857-5.010286-0.365714-2.56-0.365714-5.12 0-1.792 0.182857-3.584 0.182857-1.773714 0.530286-3.547429 0.365714-1.755429 0.877714-3.474285t1.206857-3.382858q0.676571-1.645714 1.536-3.236571 0.841143-1.590857 1.828572-3.090286 1.005714-1.481143 2.139428-2.870857 1.152-1.389714 2.413715-2.669714 1.28-1.28 2.669714-2.413714 1.389714-1.133714 2.870857-2.139429 1.499429-0.987429 3.090286-1.828571 1.572571-0.859429 3.236571-1.536 1.645714-0.694857 3.382857-1.225143 1.718857-0.512 3.474286-0.859429 1.773714-0.365714 3.547429-0.530286 1.792-0.182857 3.602285-0.182857 8.356571 0 15.908572 3.657143h0.036571l0.018286 0.018286q24.082286 11.611429 50.816 11.611428 48.475429 0 82.761143-34.267428Q914.285714 586.057143 914.285714 537.6t-34.267428-82.742857Q845.714286 420.571429 797.257143 420.571429q-9.691429 0-19.254857 1.590857l-36.297143 6.052571-5.851429-36.315428q-13.238857-82.450286-76.8-136.594286Q595.510857 201.142857 512 201.142857q-72.228571 0-131.145143 41.764572-58.916571 41.782857-82.834286 109.933714l-9.362285 26.733714-28.214857-2.395428q-5.869714-0.493714-11.757715-0.493715-57.563429 0-98.267428 40.704Q109.714286 458.093714 109.714286 515.657143q0 57.563429 40.704 98.267428Q191.122286 654.628571 248.685714 654.628571q25.581714 0 49.481143-9.106285 6.290286-2.395429 13.019429-2.395429 1.792 0 3.584 0.182857 1.792 0.164571 3.547428 0.512 1.773714 0.365714 3.474286 0.877715 1.737143 0.512 3.401143 1.206857 1.645714 0.676571 3.236571 1.536 1.590857 0.841143 3.072 1.828571 1.499429 1.005714 2.889143 2.139429 1.389714 1.152 2.651429 2.413714 1.28 1.28 2.413714 2.669714 1.152 1.389714 2.139429 2.870857 1.005714 1.499429 1.846857 3.090286 0.841143 1.572571 1.536 3.236572 0.694857 1.645714 1.206857 3.382857 0.530286 1.718857 0.877714 3.474285 0.347429 1.773714 0.530286 3.547429 0.182857 1.792 0.182857 3.602286 0 2.742857-0.420571 5.485714t-1.243429 5.376q-0.822857 2.633143-2.029714 5.12-1.206857 2.486857-2.779429 4.754286-1.572571 2.285714-3.474286 4.297143-1.883429 2.011429-4.059428 3.712-2.157714 1.718857-4.571429 3.072-2.413714 1.371429-4.992 2.340571z" p-id="946" fill="#1296db"></path></svg>
+                    </button>
+                </div>
+                
+            
+                <div class="weather loading">
+    				<div class="other">注意：选择官方数据,或上传自己的数据集</div>
+                    <h2 class="city">Welcome to the Machine Learning Platform</h2>
+                    <h1 class="temp">Start your Machine Learning Journey</h1>
+                    <div class="flex">
+                        <img src="https://openweathermap.org/img/wn/04d.png" alt="" class="icon" />
+                        <div class="description">ML</div>
+                    </div>
+                    <div class="other">
+                        <div class="humidity">数据集: 8个</div>
+                        <div class="wind">支持自定义数据集</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="three">
+            <div class="name"><a href="https://haiyong.site/about">~ 关于我们</a></div>
+        </div>
+        <script>
+            var preloader = document.getElementById('loading');
+            function myFunction() {
+                preloader.style.display = 'none';
+            }
+        </script>
+        <script type="text/javascript" src="https://wanghao221.github.io/Weather.io/js/vanilla-tilt.js"></script>
+        <script type="text/javascript">
+            VanillaTilt.init(document.querySelector(".card"), {
+                max: 15,
+                glare: true,
+                reverse: true,
+                "max-glare": 0.5,
+                speed: 400
+            });
+            VanillaTilt.init(document.querySelectorAll(".card"));
+        </script>
+    </body>
+    <script>
+        document.getElementById('fileUpload').addEventListener('change', function() {
+            //上传数据集
+            var files = this.files;
+            var formData = new FormData();
+            alert(files.length);
+            for (let i = 0; i < files.length; i++) {
+                formData.append("image", files[i]);
+            }
+        
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    alert(xhr.responseText);
+                }
+            }
+            xhr.send(formData);
+            //打开参数配置页面
+            openDialog('config-1')
+              
+
+            //window.location.href='http://127.0.0.1:5000/Df'
+        });
+        //默认选项
+        function loadNewPage(currentConfig) {
+            // 获取下拉列表当前所选项的值
+            var dropdown = document.getElementById('dropdown');
+            var selectedValue = dropdown.options[dropdown.selectedIndex].value;
+            
+            // 将当前选项添加到URL的查询参数中
+            window.location.href = '/up/' + selectedValue;
+           
+    }
+
+    
+
+    </script>
+
+    <script src="../static/js/dialog.js"></script>
+
+
+<script>
+//-----------------------AItalk-------------------------------------
+
+  // 获取元素
+  const closeBtn = document.querySelector('.close-btn');
+  const showChatBtn = document.querySelector('.show-chat-btn');
+  const chatContainer = document.querySelector('.container');
+
+  // 点击退出按钮隐藏聊天窗口
+  closeBtn.addEventListener('click', () => {
+  chatContainer.style.display = 'none';
+  showChatBtn.style.display = 'block'; // 显示聊天按钮
+  });
+
+  // 点击显示按钮显示聊天窗口
+  showChatBtn.addEventListener('click', () => {
+  chatContainer.style.display = 'block';
+  showChatBtn.style.display = 'none'; // 隐藏聊天按钮
+  });
+
+
+</script>
+
+<!--  -->
+<script>
+const chatBody = document.querySelector(".chat-body");
+const txtInput = document.querySelector("#txtInput");
+const send = document.querySelector(".send");
+
+send.addEventListener("click", () => renderUserMessage());
+
+txtInput.addEventListener("keyup", (event) => {
+  if (event.keyCode === 13) {
+    renderUserMessage();
+  }
+});
+
+const renderUserMessage = () => {
+  const userInput = txtInput.value;
+  renderMessageEle(userInput, "user");
+  txtInput.value = "";
+  setTimeout(() => {
+    renderChatbotResponse(userInput);
+    setScrollPosition();
+  }, 600);
+};
+
+const renderChatbotResponse = (userInput) => {
+  const res = getChatbotResponse(userInput);
+};
+
+const renderMessageEle = (txt, type) => {
+  let className = "user-message";
+  if (type !== "user") {
+    className = "chatbot-message";
+  }
+  const messageEle = document.createElement("div");
+  const txtNode = document.createTextNode(txt);
+  messageEle.classList.add(className);
+  messageEle.append(txtNode);
+  chatBody.append(messageEle);
+};
+
+const getChatbotResponse = (userInput) => {
+      
+    var xhr_user_message = new XMLHttpRequest();
+    xhr_user_message.open("POST", 'http://127.0.0.1:5000/get_user', true);
+    xhr_user_message.setRequestHeader('Content-Type', 'application/json');
+    xhr_user_message.send(JSON.stringify({
+      message: userInput
+    }));
+    var xhr_ai_response = new XMLHttpRequest();
+    xhr_ai_response.open('GET', 'http://127.0.0.1:5000/get_AI?message=' + userInput, true);
+    xhr_ai_response.onload = function() {
+    if (this.status == 200){
+      var response = JSON.parse(this.responseText);
+      var message = response.ai_response.content;
+      renderMessageEle(message);
+      return message;
+    }
+    };
+    xhr_ai_response.send(null);
+};
+
+  const setScrollPosition = () => {
+  if (chatBody.scrollHeight > 0) {
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+};
+closeDialog()
+</script>

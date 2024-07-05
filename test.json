@@ -1,0 +1,51 @@
+{
+    "user_info": {
+      "userId": 1,
+      "missionId": 1,
+      "mlclass":"classification",
+      "create_time":"2024-01-13 14:17"
+    },
+    "MLinfo": {
+      "setup_models_data": null,
+      "compare_models_data": null,
+      "create_model_data": null,
+      "tune_model_data": null,
+      "predictions": null
+    },
+    "userparams": {
+      "setup": {
+        "target": "Survived",
+        "data": "",
+        "train_size": 0.8,
+        "session_id": 123,
+        "html": true,
+        "verbose": false
+      },
+      "compare_models": {
+        "verbose": false
+      },
+      "create_model": {
+        "estimator": "rf",
+        "verbose": false
+      },
+      "tune_model": {
+        "fold": 5,
+        "round": 2,
+        "n_iter": 50,
+        "custom_grid": {
+          "n_estimators": [100, 200],
+          "max_depth": [10, 20]
+        },
+        "verbose": false
+      },
+      "plot_model": {
+        "plot": "auc",
+        "verbose": false,
+        "save": true
+      },
+      "save_model": {
+        "model_name": "best_model",
+        "verbose": false
+      }
+    }
+  }

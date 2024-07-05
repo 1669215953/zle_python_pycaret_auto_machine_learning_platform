@@ -1,0 +1,11 @@
+{
+    "host":  "localhost",
+    "user":  "root",
+    "password": "jhw666666",
+    "database": "ml",
+    "PLOTS_DIR": "metrics",
+    "UPLOAD_DIR":  "userfiles",
+    "MODEL_DIR":"models",
+    "DEFAULT_DIR":"default_ML",
+    "PREDICT_DIR": "predict"
+}

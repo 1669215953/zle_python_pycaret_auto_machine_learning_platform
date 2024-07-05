@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Display</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <button id="requestButton">Request Image</button>
+        <table id="imageTable">
+            <!-- The images and names will be inserted in this table -->
+        </table>
+
+        <script>
+            $(document).ready(function(){
+                $("#requestButton").click(function(){
+                    // We're using jQuery's ajax function here because it supports the "xhrFields" property, which is needed for Blob
+                    $.ajax({
+                        url: "http://localhost:5000/get_image",
+                        xhrFields: {
+                            responseType: 'blob' // to deal with Blob
+                        },
+                        success: function(data, status, xhr) {
+                            var blob = new Blob([data]); // Create blob from response
+                            var imgSrc = URL.createObjectURL(blob); // Generate URL from blob
+
+                            var imgName = xhr.getResponseHeader('image_name'); // Get the image name from response headers
+                            
+                            $("#imageTable").empty();
+                            var row = $("<tr></tr>");
+                            row.append("<td>" + imgName + "</td>");
+                            row.append("<td><img src='" + imgSrc + "'></td>");
+                            $("#imageTable").append(row);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

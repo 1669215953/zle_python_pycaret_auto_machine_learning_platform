@@ -1,0 +1,1139 @@
+{%extends 'base_show.html'%}
+{% block content %}
+
+<div class="content-page">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12 mb-4 mt-1">
+   <div class="d-flex flex-wrap justify-content-between align-items-center">
+       <h4 class="font-weight-bold">首页</h4>
+       <div class="form-group mb-0 vanila-daterangepicker d-flex flex-row">
+            <div class="date-icon-set">
+               <input type="text" name="start" class="form-control" placeholder="From Date">
+               <span class="search-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="" width="20" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+               </span>
+            </div>                  
+               <span class="flex-grow-0">
+               <span class="btn">To</span>
+            </span>
+            <div class="date-icon-set">
+               <input type="text" name="end" class="form-control" placeholder="To Date">
+               <span class="search-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="" width="20" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+               </span>
+            </div>                  
+      </div>
+   </div>
+</div>
+<div class="col-lg-8 col-md-12">
+   <div class="row">
+      <div class="col-md-4">
+         <div class="card">
+            <div class="card-body">
+               <div class="d-flex align-items-center">
+                  <div class="">
+                      <p class="mb-2 text-secondary">岗位信息数</p>
+                      <div class="d-flex flex-wrap justify-content-start align-items-center">
+                         <h5 class="mb-0 font-weight-bold">{{data_num }}条</h5>
+                         <p class="mb-0 ml-3 text-success font-weight-bold"></p>
+                      </div>                            
+                  </div>
+               </div>
+            </div>
+         </div>   
+      </div>
+      <div class="col-md-4">
+      <div class="card">
+          <div class="card-body">
+              <div class="d-flex align-items-center">
+                  <div class="">
+                      <p class="mb-2 text-secondary">行业平均薪资</p>
+                      <div class="d-flex flex-wrap justify-content-start align-items-center">
+                         <h5 class="mb-0 font-weight-bold">{{ average_salary[0] }} - {{ average_salary[1] }}</h5>
+                         <p class="mb-0 ml-3 text-success font-weight-bold"></p>
+                      </div>                            
+                  </div>
+              </div>
+          </div>
+      </div>   
+      </div>
+      <div class="col-md-4">
+      <div class="card">
+          <div class="card-body">
+              <div class="d-flex align-items-center">
+                  <div class="">
+                     <p class="mb-2 text-secondary">最热门城市</p>
+                     <div class="d-flex flex-wrap justify-content-start align-items-center">
+                        <h5 class="mb-0 font-weight-bold">{{ top_city }}</h5>
+                        <p class="mb-0 ml-3 text-danger font-weight-bold"></p>
+                     </div>                            
+                  </div>
+              </div>
+          </div>
+      </div>   
+      </div>
+      <!-- <div class="col-md-4">
+         <div class="card">
+             <div class="card-body">
+                 <div class="d-flex align-items-center">
+                     <div class="">
+                         <p class="mb-2 text-secondary">行业平均薪资</p>
+                         <div class="d-flex flex-wrap justify-content-start align-items-center">
+                            <h5 class="mb-0 font-weight-bold">{{ average_salary[0] }} - {{ average_salary[1] }}</h5>
+                            <p class="mb-0 ml-3 text-success font-weight-bold"></p>
+                         </div>                            
+                     </div>
+                 </div>
+             </div>
+          </div>   
+      </div>
+
+
+       -->
+      <div class="col-md-12">
+      <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+               <h4 class="font-weight-bold">学历要求</h4>
+               <div id="main", style="width: 726px ;height: 265px;",class="custom-chart">
+               
+
+               </div>
+            </div>
+             <!-- <div id="chart-apex-column-01" class="custom-chart"></div> -->
+          </div>
+      </div>   
+      
+      </div>
+   </div>
+</div>
+<div class="col-lg-4 col-md-8">
+   <div class="card card-block card-stretch card-height">
+      <div class="card-header card-header-border d-flex justify-content-between">
+         <div class="header-title">
+            <h4 class="card-title">热门岗位</h4>
+         </div>
+      </div>
+      <div class="card-body-list">               
+         <ul class="list-style-3 mb-0">
+          {% for job, popularity in hot_jobs.items() %}
+          <li class="p-3 list-item d-flex justify-content-start align-items-center">
+              <div class="avatar">
+                  <img class="avatar avatar-img avatar-60 rounded" src="/static/picture/w{{loop.index}}.png" alt="1.jpg">                        
+              </div>
+              <div class="list-style-detail ml-3 mr-2">
+                 <p class="mb-0">{{job}}</p>
+              </div>
+              <div class="list-style-action d-flex justify-content-end ml-auto">                        
+                 <h6 class="font-weight-bold">{{popularity}}</h6> 
+                 
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orange" class="bi bi-fire" viewBox="0 0 16 16">
+                  <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/>
+                </svg>
+                
+                           </li>            {% endfor %}
+         </ul>
+      </div>
+   </div>
+   
+</div>
+<!-- <div class="col-md-4">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card bg-primary">
+             <div class="card-body">
+                 <div class="d-flex align-items-center">
+                     <div class="fit-icon-2 text-info text-center">
+                         <div id="circle-progress-01" class="circle-progress-01 circle-progress circle-progress-light" data-min-value="0" data-max-value="100" data-value="62" data-type="percent"></div>
+                     </div>
+                     <div class="ml-3">
+                         <h5 class="text-white font-weight-bold">1,860 <small> /3k Target</small></h5>
+                         <small class="mb-0">Order In Period</small>
+                     </div>
+                 </div>
+             </div>
+         </div>
+      </div>
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-body">
+               <div class="d-flex justify-content-between align-items-center">
+                  <h6 class="font-weight-bold">Active Users</h6>
+                  <div class="d-flex align-items-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                     </svg>
+                     <span class=" font-weight-bold">200</span>
+                  </div>
+               </div>
+               <p class="mb-0">Pages views per day</p>
+               <div id="chart-apex-column-02" class="custom-chart"></div>
+               <div class="d-flex justify-content-between align-items-center">
+                  <p class="mb-0 pt-3 ">25 June</p>
+                  <p class="mb-0 pt-3 ">26 June</p>
+                  <p class="mb-0 pt-3 ">27 June</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div> -->
+<div class="col-lg-4 col-md-6">
+   <div class="card card-block card-stretch card-height">
+      <div class="card-header d-flex justify-content-between">
+         <div class="header-title">
+            <h4 class="card-title">词云图集合</h4>
+         </div>
+         <div class="card-header-toolbar d-flex align-items-center">                  
+            <div class="dropdown">
+                  <a href="#" class="text-muted pl-3" id="dropdownMenuButton-event" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveaspectratio="xMidYMid meet" viewbox="0 0 24 24">
+                        <g fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                           <circle cx="12" cy="12" r="1"></circle>
+                           <circle cx="19" cy="12" r="1"></circle>
+                           <circle cx="5" cy="12" r="1"></circle></g>
+                     </svg>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-event">
+                     <a class="dropdown-item" href="#">
+                           <svg class="svg-icon text-secondary" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                           </svg>
+                           Edit
+                     </a>
+                     <a class="dropdown-item" href="#">
+                           <svg class="svg-icon text-secondary" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                           </svg>
+                           View
+                     </a>
+                     <a class="dropdown-item" href="#">
+                           <svg class="svg-icon text-secondary" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                           </svg>
+                           Delete
+                     </a>
+                  </div>
+               </div>
+         </div>
+      </div>
+      <div class="card-body p-0">
+         <div class="table-responsive">
+            <table class="table table-spacing mb-0">
+               <tbody>
+                  <!-- 行 -->
+                  <tr class="white-space-no-wrap">   
+                      <td> <!--  <列> -->
+                        <h6 class="mb-0 text-uppercase text-secondary">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="pr-2" width="30" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                           </svg>
+                           福利</h6>
+                     </td>
+                     <td class="pl-0 py-3">
+                        <div id="word-cloud-reward" style="width:200px;height: 100px;"></div>
+                     </td>
+                  </tr>
+                  <tr class="white-space-no-wrap">   
+                     <td> <!--  <列> -->
+                       <h6 class="mb-0 text-uppercase text-secondary">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="pr-2" width="30" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                          </svg>
+                          公司行业</h6>
+                    </td>
+                    <td class="pl-0 py-3">
+                       <div id="word-cloud-industry" style="width:200px;height: 100px;"></div>
+                    </td>
+                 </tr>
+                  <tr class="white-space-no-wrap">   
+                     <td> <!--  <列> -->
+                       <h6 class="mb-0 text-uppercase text-secondary">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="pr-2" width="30" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                          </svg>
+                          能力需求</h6>
+                    </td>
+                    <td class="pl-0 py-3">
+                       <div id="word-cloud-capacity" style="width:200px;height: 100px;"></div>
+                    </td>
+                 </tr>
+
+              <!-- <tr class="white-space-no-wrap">   
+               <td>
+                 <h6 class="mb-0 text-uppercase text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="pr-2" width="30" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    各省份职位需求</h6>
+                    </td>
+                    <td class="pl-0 py-3">
+                 <div id="word-cloud-province" style="width:200px;height: 100px;"></div>
+                   </td>
+               </tr>                -->
+               </tbody>
+            </table>
+            
+         </div>
+         <div class="d-flex justify-content-end align-items-center border-top-table p-3">
+            <a href="http://127.0.0.1:5000/page/show" class="btn btn-secondary btn-sm">See All</a>
+         </div>
+      </div>
+   </div>
+</div>
+<div id="hot_position" class="col-lg-4 col-md-6"width="300px" height="100px"></div>
+
+
+<div id="languages"  class="col-lg-4 col-md-6"width="300px" height="100px">
+   <!-- <div class="card">
+      <div class="card-body">
+         <h4 class="font-weight-bold mb-3">主流编程语言占比</h4>
+         <div id="chart-apex-column-03" class="custom-chart"></div>
+         <div class="d-flex justify-content-around align-items-center">
+            <div><svg width="24" height="24" viewbox="0 0 24 24" fill="#ffbb33" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="18" rx="2" fill="#ffbb33"></rect>
+                  </svg>
+                  
+                  <span>Mobile</span>
+            </div>
+            <div>
+                  <svg width="24" height="24" viewbox="0 0 24 24" fill="#e60000" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="18" rx="2" fill="#e60000"></rect>
+                  </svg>
+                  
+                  <span>Laptop</span>
+            </div>
+         </div>
+         <div class="d-flex justify-content-around align-items-center mt-3">
+            <div>
+                  <svg width="24" height="24" viewbox="0 0 24 24" fill="primary" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="18" rx="2" fill="#04237D"></rect>
+                  </svg>
+                  
+                  <span>Electronics</span>
+            </div>
+            <div>
+                  <svg width="24" height="24" viewbox="0 0 24 24" fill="primary" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="18" rx="2" fill="#8080ff"></rect>
+                  </svg>
+                  
+                  <span>Others</span>
+            </div>
+         </div>
+      </div>
+   </div> -->
+</div>
+<div id="job_time" class="col-lg-4 col-md-6"width="300px" height="100px"></div>
+
+
+<div class="col-lg-8 col-md-12">
+   <div class="card">
+      <div class="card-header d-flex justify-content-between">
+         <div class="header-title">
+            <h4 class="card-title">公司需求</h4>
+         </div>
+         <div class="card-header-toolbar d-flex align-items-center">                  
+            <div class="dropdown">
+                  <a href="#" class="text-muted pl-3" id="dropdownMenuButton-customer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveaspectratio="xMidYMid meet" viewbox="0 0 24 24">
+                        <g fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                           <circle cx="12" cy="12" r="1"></circle>
+                           <circle cx="19" cy="12" r="1"></circle>
+                           <circle cx="5" cy="12" r="1"></circle></g>
+                     </svg>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-customer">
+                     <a class="dropdown-item" href="#">
+                           <svg class="svg-icon text-secondary" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                           </svg>
+                           Edit
+                     </a>
+                     <a class="dropdown-item" href="#">
+                           <svg class="svg-icon text-secondary" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                           </svg>
+                           View
+                     </a>
+                     <a class="dropdown-item" href="#">
+                           <svg class="svg-icon text-secondary" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                           </svg>
+                           Delete
+                     </a>
+                  </div>
+               </div>
+         </div>
+      </div>
+      <div class="card-body p-0">
+         <div class="table-responsive">
+            <table class="table mb-0">
+               <thead class="table-color-heading">
+                  <tr class="text-secondary">
+                     <th scope="col">序号</th>
+                     <th scope="col">公司名称</th>
+                     <th scope="col">公司行业</th>
+                     <th scope="col" class="text-right">公司需求</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for data in campany_infos %}
+                  {% set job_name, location, salary, time, company, link = data %}
+
+                  <tr class="white-space-no-wrap">
+                      <td class="">
+                          <div class="active-project-1 d-flex align-items-center mt-0 ">
+                              <div class="h-avatar is-medium">
+                                  <img class="avatar rounded" alt="user-icon" src="/static/picture/17.jpg">
+                              </div>
+                              <div class="data-content">
+                                  <div>
+                                      <!-- 职位名称 -->
+                                  <span class="font-weight-bold" style="font-size: 16px;">{{ job_name }}</span>                           
+                                  </div>
+                                  <p class="m-0 mt-1">
+                                  <!-- Molten Orange, In the Ear -->
+                                  </p>
+                              </div>
+                          </div>
+                      </td>
+                      <!-- 工作地点 -->
+                      <td>{{ location }}  </td>
+                      <!-- 工资 -->
+                      <td class="text-right">
+                          {{ salary }}
+                      </td>
+                      <!--  -->
+                      <td>
+                          {{ time }}
+                      </td>
+                  </tr>
+
+                  {% endfor %}
+                  <!-- <tr class="white-space-no-wrap">
+                     <td>01 Jun 2020</td>
+                     <td>
+                        <div class="d-flex align-items-center">
+                           <div class="avatar-45 mr-2">
+                              <img src="/static/picture/2.jpg" class="img-fluid rounded-circle" alt="image">
+                           </div>
+                           <div>Maggie Potts</div>
+                        </div>
+                     </td>
+                     <td>
+                        <p class="mb-0 text-success d-flex justify-content-start align-items-center">
+                           <small><svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="18" viewbox="0 0 24 24" fill="none">                                                
+                           <circle cx="12" cy="12" r="8" fill="#3cb72c"></circle></svg>
+                           </small> Completed
+                        </p>
+                     </td>
+                     <td class="text-right">$104.98</td>
+                  </tr>
+                  <tr class="white-space-no-wrap">
+                     <td>02 Jun 2020</td>
+                     <td>
+                        <div class="d-flex align-items-center">
+                           <div class="avatar-45 mr-2">
+                              <img src="/static/picture/5.jpg" class="img-fluid rounded-circle" alt="image">
+                           </div>
+                           <div>Kevin Adkins</div>
+                        </div>
+                     </td>
+                     <td>
+                        <p class="mb-0 text-success d-flex justify-content-start align-items-center">
+                           <small><svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="18" viewbox="0 0 24 24" fill="none">                                                
+                           <circle cx="12" cy="12" r="8" fill="#3cb72c"></circle></svg>
+                           </small> Completed
+                        </p>
+                     </td>
+                     <td class="text-right">$233.00</td>
+                  </tr>
+                  <tr class="white-space-no-wrap">
+                     <td>05 Jun 2020</td>
+                     <td>
+                        <div class="d-flex align-items-center">
+                           <div class="avatar-45 mr-2">
+                              <img src="/static/picture/1.jpg" class="img-fluid rounded-circle" alt="image">
+                           </div>
+                           <div>Max Lynn</div>
+                        </div>
+                     </td>
+                     <td>
+                        <p class="mb-0 text-warning d-flex justify-content-start align-items-center">
+                           <small><svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="18" viewbox="0 0 24 24" fill="none">                                                
+                           <circle cx="12" cy="12" r="8" fill="#db7e06"></circle></svg>
+                           </small>Pending
+                        </p>
+                     </td>
+                     <td class="text-right">$150.01</td>
+                  </tr>
+                  <tr class="white-space-no-wrap">
+                     <td>06 Jun 2020</td>
+                     <td>
+                        <div class="d-flex align-items-center">
+                           <div class="avatar-45 mr-2">
+                              <img src="/static/picture/3.jpg" class="img-fluid rounded-circle" alt="image">
+                           </div>
+                           <div>Danniw Yatt</div>
+                        </div>
+                     </td>
+                     <td>
+                        <p class="mb-0 text-danger d-flex justify-content-start align-items-center">
+                           <small><svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="18" viewbox="0 0 24 24" fill="none">                                                
+                           <circle cx="12" cy="12" r="8" fill="#F42B3D"></circle></svg>
+                           </small>Cancelled
+                        </p>
+                     </td>
+                     <td class="text-right">$199.99</td>
+                  </tr>                         -->
+               </tbody>
+            </table>
+            <div class="d-flex justify-content-end align-items-center border-top-table p-3">
+               <a href="http://127.0.0.1:5000/page/show" class="btn btn-secondary btn-sm">See All</a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="col-lg-4 col-md-12">
+   <div class="card">
+      <div class="card-body">
+         <h4 class="font-weight-bold mb-3">各省份需求图</h4>
+         <div id="china"class="row" style="width:1080px;height: 700px;">
+      </div>
+   </div>
+</div>
+</div>
+<!-- Page end  -->
+
+</div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+{%block data%} 
+
+<!-- 
+<script>
+    
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+        title: {
+            text: 'Referer of a Website',
+            subtext: 'Fake Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+        },
+        series: [
+            {
+            name: 'Access From',
+            type: 'pie',
+            radius: '50%',
+            data: [
+                { value: 1048, name: 'Search Engine' },
+                { value: 735, name: 'Direct' },
+                { value: 580, name: 'Email' },
+                { value: 484, name: 'Union Ads' },
+                { value: 300, name: 'Video Ads' }
+            ],
+            emphasis: {
+                itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+            }
+        ]
+        };
+
+        option && myChart.setOption(option);
+
+
+
+    </script> -->
+<!-- 
+<script>
+    $(document).ready(function() {
+       $.ajax({
+           url: "http://127.0.0.1:5000/page/woundcloud",
+           type: "GET",
+           success: function(data) {
+               // Process the received data
+               var hotJobs = data;
+               var html = "";
+
+               // Generate HTML to display the hot jobs data
+               for (var i = 0; i < hotJobs.length; i++) {
+                   html += "<p>" + hotJobs[i].name + ": " + hotJobs[i].value + "</p>";
+               }
+
+               // Display the hot jobs data on the web page
+               $("#result").html(html);
+           },
+           error: function(xhr, status, error) {
+               console.log("Error: " + error);
+           }
+       });
+   });
+
+
+
+</script> -->
+<!-- 饼图 -->
+<!-- <script type="text/javascript" >
+    
+   function getData() {
+        $.ajax({
+           url:'http://localhost:5000/page/data/academic',
+           type:'GET',
+           async:true,
+           dataType:'json',
+           success:function(datas) {
+           var myChart = echarts.init(document.getElementById('main'));
+           var option;
+           option = {
+           title: {
+              text: '学历要求占比',
+              subtext: '学历占比图',
+              left: 'center'
+           },
+           tooltip: {
+              trigger: 'item'
+           },
+           legend: {
+              orient: 'vertical',
+              left: 'left'
+           },
+           series: [
+              {
+              name: 'Access From',
+              type: 'pie',
+              radius: '50%',
+              data:datas,
+              emphasis: {
+                 itemStyle: {
+                 shadowBlur: 10,
+                 shadowOffsetX: 0,
+                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+                 }
+              }
+              }
+           ]
+           };
+
+           option && myChart.setOption(option);
+
+           },
+           error:function (msg) {
+               console.log(msg);
+               console.log('词云系统发生错误');
+           }
+       })
+   };
+   getData()
+   // setInterval(getData, 10000);//循环调用
+
+
+</script> -->
+<!-- languages -->
+<!-- <script type="text/javascript">
+          function getData() {
+            $.ajax({
+                url: 'http://localhost:5000/page/data/languages',
+                type: 'GET',
+                async: true,
+                dataType: 'json',
+                success: function (datas) {
+
+                    var myChart = echarts.init(document.getElementById('languages'));
+                    var totalText = "总计: "+datas.total
+                  console.log( datas,datas.total,datas.data)
+                    option = {
+                     title: {
+                           text: '编程语言岗位占比',
+                           left: 'center',
+                           top: 5,
+                           textStyle: {
+                                 color: '#333',
+                                 fontSize: 20
+                           }
+                        },
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            top: '5%',
+                            left: 'center'
+                        },
+                        graphic: [
+                            {
+                                type: 'text',
+                                id: 'totalText',
+                                left: 'center',
+                                top: '49%',
+                                zlevel: 2,
+                                style: {
+                                    text: totalText,
+                                    textAlign: 'center',
+                                    fill: '#666',
+                                    fontSize: 25
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: 'Access From',
+                                type: 'pie',
+                                radius: ['40%', '70%'],
+                                avoidLabelOverlap: false,
+                                itemStyle: {
+                                    borderRadius: 10,
+                                    borderColor: '#fff',
+                                    borderWidth: 2
+                                },
+                                label: {
+                                    show: false
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false,
+                                        fontSize: 40,
+                                        fontWeight: 'bold'
+                                    }
+                                },
+                                labelLine: {
+                                    show: false
+                                },
+                                data: datas.data
+                            }
+                        ]
+                    };
+
+                    option && myChart.setOption(option);
+
+                    myChart.on('mouseover', function (params) {
+                        if (params.componentType === 'series') {
+                            if (params.seriesType === 'pie') {
+                                var hoveredData = params.data;
+                                if (hoveredData) {
+                                    var detailText = hoveredData.name+': ' + hoveredData.value;
+                                    myChart.setOption({
+                                        graphic: {
+                                            id: 'totalText',
+                                            style: {
+                                                text: detailText
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    myChart.setOption({
+                                        graphic: {
+                                            id: 'totalText',
+                                            style: {
+                                                text: totalText
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+                    myChart.on('mouseout', function (params) {
+                        myChart.setOption({
+                            graphic: {
+                                id: 'totalText',
+                                style: {
+                                    text: totalText
+                                }
+                            }
+                        });
+                    });
+                },
+                error: function (msg) {
+                    console.log(msg);
+                    console.log('编程语言汇总出错发生错误');
+                }
+            });
+        }
+
+        getData();
+</script> -->
+<!-- 词云导入 -->
+<script src="/static/js/cloud_mine.js"></script>
+<!-- 福利词云图 -->
+
+<!-- <script type="text/javascript">
+ 
+
+    // 发送ajax请求，从后台获取json数据
+    
+    function getData() {
+         $.ajax({
+            url:'http://localhost:5000/page/woundcloud/reward',
+            data:{},
+            type:'GET',
+            async:true,
+            dataType:'json',
+            success:function(data) {
+         var myChart = echarts.init(document.getElementById('word-cloud'));
+          var maskImage = new Image();
+          maskImage.src = data.image
+    
+          maskImage.onload = function(){
+            myChart.setOption( {
+              backgroundColor:'#fff',
+              tooltip: {
+                show: false
+              },
+              series: [{
+                type: 'wordCloud',
+                gridSize: 1,
+                sizeRange: [12, 55],
+                rotationRange: [-45, 0, 45, 90],
+                maskImage: maskImage,
+                textStyle: {
+                  normal: {
+                    color: function() {
+                      return 'rgb(' +
+                          Math.round(Math.random() * 255) +
+                          ', ' + Math.round(Math.random() * 255) +
+                          ', ' + Math.round(Math.random() * 255) + ')'
+                    }
+                  }
+                },
+                left: 'center',
+                top: 'center',
+                right: null,
+                bottom: null,
+                data: data.value
+              }]
+            })
+          }
+
+            },
+            error:function (msg) {
+                console.log(msg);
+                console.log('词云系统发生错误');
+            }
+        })
+    };
+   //  $(document).ready(function () {
+   //     getData();
+   //     console.log('你好');
+ 
+   //  });
+    setInterval(getData, 1000);//循环调用
+
+</script> -->
+
+    <!-- 词云 -->
+<!-- <script>
+        onload = function () {
+          var data = {
+            value: [{
+              "name": "花鸟市场",
+              "value": 1446
+            },
+              {
+                "name": "汽车",
+                "value": 928
+              },
+              {
+                "name": "视频",
+                "value": 906
+              },
+              {
+                "name": "电视",
+                "value": 825
+              },
+              {
+                "name": "Lover Boy 88",
+                "value": 514
+              },
+              {
+                "name": "动漫",
+                "value": 486
+              },
+              {
+                "name": "音乐",
+                "value": 53
+              },
+              {
+                "name": "直播",
+                "value": 163
+              },
+              {
+                "name": "广播电台",
+                "value": 86
+              },
+              {
+                "name": "戏曲曲艺",
+                "value": 17
+              },
+              {
+                "name": "演出票务",
+                "value": 6
+              },
+              {
+                "name": "给陌生的你听",
+                "value": 1
+              },
+              {
+                "name": "资讯",
+                "value": 1437
+              },
+              {
+                "name": "商业财经",
+                "value": 422
+              },
+            ],
+              image:"data:image/png;base64,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"
+          }
+          var myChart = echarts.init(document.getElementById('word-cloud'));
+          var maskImage = new Image();
+          maskImage.src = data.image
+    
+          maskImage.onload = function(){
+            myChart.setOption( {
+              backgroundColor:'#fff',
+              tooltip: {
+                show: false
+              },
+              series: [{
+                type: 'wordCloud',
+                gridSize: 1,
+                sizeRange: [12, 55],
+                rotationRange: [-45, 0, 45, 90],
+                maskImage: maskImage,
+                textStyle: {
+                  normal: {
+                    color: function() {
+                      return 'rgb(' +
+                          Math.round(Math.random() * 255) +
+                          ', ' + Math.round(Math.random() * 255) +
+                          ', ' + Math.round(Math.random() * 255) + ')'
+                    }
+                  }
+                },
+                left: 'center',
+                top: 'center',
+                right: null,
+                bottom: null,
+                data: data.value
+              }]
+            })
+          }
+    
+        }
+</script> -->
+
+    <script src="/static/js/sidebar.js"></script>
+    <!-- 中国地图 -->
+    <script src="/static/js/china.js"></script>
+    <script src="/static/js/button_url.js" type="text/javascript"></script>
+
+<!-- <script type="text/javascript">
+      // 发送ajax请求，从后台获取json数据
+
+      function getmapData() {
+            $.ajax({
+               url:'http://localhost:5000/page/chinamap',
+               data:{},
+               type:'GET',
+               async:true,
+               dataType:'json',
+               success:function(mapdata) {
+           // 初始化echarts实例
+        var myEcharts = echarts.init(document.getElementById("china"));
+        var option = {
+            title: {  //标题样式
+                text: '中国地图',
+                x: "center",
+                textStyle: {
+                    fontSize: 18,
+                    color: "black"
+                },
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    //console.log(params)
+                    if (params.name) {
+                        return params.name + ' : ' + (isNaN(params.value) ? 0 : parseInt(params.value));
+                    }
+                }
+            },
+            visualMap: {//视觉映射组件
+                top: 'bottom',
+                left: 'left',
+                min: 10,
+                max: 10000,
+                //text: ['High', 'Low'],
+                realtime: false,  //拖拽时，是否实时更新
+                calculable: true,  //是否显示拖拽用的手柄
+                inRange: {
+                    color: ['lightskyblue', 'yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: '招聘岗位数据分布',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,//是否开启鼠标缩放和平移漫游
+                    itemStyle: {//地图区域的多边形 图形样式
+                        normal: {//是图形在默认状态下的样式
+                            label: {
+                                show: true,//是否显示标签
+                                textStyle: {
+                                    color: "black"
+                                }
+                            }
+                        },
+                        zoom: 1.5,  //地图缩放比例,默认为1
+                        emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                            label: {show: true}
+                        }
+                    },
+                    top: "3%",//组件距离容器的距离
+                    data: mapdata
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myEcharts.setOption(option);
+               },
+               error:function (msg) {
+                  console.log(msg);
+                  console.log('地图系统发生错误');
+               }
+            })
+      };
+      // $(document).ready(function () {
+      //    getmapData();
+      //    console.log('你好');
+
+      // });
+      setInterval(getmapData, 1000);//循环调用
+
+</script> -->
+<!-- <script>
+        // 初始化echarts实例
+        var myEcharts = echarts.init(document.getElementById("china"));
+        var option = {
+            title: {  //标题样式
+                text: '中国地图',
+                x: "center",
+                textStyle: {
+                    fontSize: 18,
+                    color: "black"
+                },
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    console.log(params)
+                    if (params.name) {
+                        return params.name + ' : ' + (isNaN(params.value) ? 0 : parseInt(params.value));
+                    }
+                }
+            },
+            visualMap: {//视觉映射组件
+                top: 'bottom',
+                left: 'left',
+                min: 10,
+                max: 500000,
+                //text: ['High', 'Low'],
+                realtime: false,  //拖拽时，是否实时更新
+                calculable: true,  //是否显示拖拽用的手柄
+                inRange: {
+                    color: ['lightskyblue', 'yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: '模拟数据',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,//是否开启鼠标缩放和平移漫游
+                    itemStyle: {//地图区域的多边形 图形样式
+                        normal: {//是图形在默认状态下的样式
+                            label: {
+                                show: true,//是否显示标签
+                                textStyle: {
+                                    color: "black"
+                                }
+                            }
+                        },
+                        zoom: 1.5,  //地图缩放比例,默认为1
+                        emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                            label: {show: true}
+                        }
+                    },
+                    top: "3%",//组件距离容器的距离
+                    data: [
+                        {name: '北京', value: 350000},
+                        {name: '天津', value: 120000},
+                        {name: '上海', value: 300000},
+                        {name: '重庆', value: 92000},
+                        {name: '河北', value: 25000},
+                        {name: '河南', value: 20000},
+                        {name: '云南', value: 500},
+                        {name: '辽宁', value: 3050},
+                        {name: '黑龙江', value: 80000},
+                        {name: '湖南', value: 2000},
+                        {name: '安徽', value: 24580},
+                        {name: '山东', value: 40629},
+                        {name: '新疆', value: 36981},
+                        {name: '江苏', value: 13569},
+                        {name: '浙江', value: 24956},
+                        {name: '江西', value: 15194},
+                        {name: '湖北', value: 41398},
+                        {name: '广西', value: 41150},
+                        {name: '甘肃', value: 17630},
+                        {name: '山西', value: 27370},
+                        {name: '内蒙古', value: 27370},
+                        {name: '陕西', value: 97208},
+                        {name: '吉林', value: 88290},
+                        {name: '福建', value: 19978},
+                        {name: '贵州', value: 94485},
+                        {name: '广东', value: 89426},
+                        {name: '青海', value: 35484},
+                        {name: '西藏', value: 97413},
+                        {name: '四川', value: 54161},
+                        {name: '宁夏', value: 56515},
+                        {name: '海南', value: 54871},
+                        {name: '台湾', value: 48544},
+                        {name: '香港', value: 49474},
+                        {name: '澳门', value: 34594}
+                    ]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myEcharts.setOption(option);
+</script> -->
+                       {%endblock%}

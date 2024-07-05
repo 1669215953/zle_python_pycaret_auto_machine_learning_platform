@@ -1,0 +1,46 @@
+
+{%extends 'base.html'%}
+
+{% block content %}
+<link href="../static/css/new.css" rel="stylesheet" />
+<script src="../static/js/echarts.min.js"></script>
+<div class="new" id="new">
+    <div class="raw-chart">
+        <ul>
+            <ol class="chartList" id="chartList">
+                <li>散点图</li>
+                <li>折线图</li>
+                <li>条形图</li>
+                <li>饼状图</li>
+                <li>平行坐标图</li>
+                <li>RadViz图</li>
+                <li>Andrew图</li>
+            </ol>
+        </ul>
+        <div id="scatterChart"></div>
+
+        <div class="chart-area">
+            <div id="chartShow"></div>
+
+            <div class="right">
+
+
+                <p>这里</p>
+
+
+
+            </div>
+        </div>
+
+    </div>
+  <div id="myDiv" data_index="{{ index }}"></div>
+  <div class="row">
+            {{ data_frame | safe }}
+  </div>
+</div>
+
+<script src="../static/js/new.js?index={{ index }}"></script>
+
+{% endblock %}
+
+

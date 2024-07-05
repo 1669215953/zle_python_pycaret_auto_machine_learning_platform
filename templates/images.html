@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="getImages">Get Images</button>
+    <table id="imageTable">
+      <tr>
+        <th>Image</th>
+        <th>Filename</th>
+      </tr>
+    </table>
+  </body>
+</html>
+<script>
+    document.getElementById('getImages').addEventListener('click', function () {
+        // fetch call to backend API to get the image names
+        fetch("http://localhost:5000/get_image_names") 
+            .then(response => response.json()) // assuming the server response is JSON with a list of image names
+            .then(data => {
+                data.forEach(imageName => {
+                   fetch(`http://localhost:5000/get_images/${imageName}`)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        let row = document.createElement('tr');
+                        let name = document.createElement('td');
+                        let image = document.createElement('td');
+    
+                        let imgElement = document.createElement('img');
+                        imgElement.src = URL.createObjectURL(blob);
+                        imgElement.onload = function() {
+                            URL.revokeObjectURL(imgElement.src); // clear resources
+                        }
+                        imgElement.style.width = '100px';
+                        imgElement.style.height = '200px';
+                        imgElement.style.objectFit = 'contain'; // keeps image ratio
+                        let imageNameWithoutExtension = imageName.split('.').slice(0, -1).join('.');
+                        name.appendChild(document.createTextNode(imageNameWithoutExtension));
+                        image.appendChild(imgElement);
+    
+                        row.appendChild(image);
+                        row.appendChild(name);
+                        
+                        document.getElementById('imageTable').appendChild(row);
+                    })
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+</script>

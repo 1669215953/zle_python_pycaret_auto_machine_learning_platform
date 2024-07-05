@@ -1,0 +1,71 @@
+{% block head %}
+
+
+<link rel="stylesheet" type="text/css" href="../static/css/mycss.css">
+<script src="../static/js/mytools.js"></script>
+<script src="../static/js/core/jquery.min.js"></script>
+<script src="../static/js/axios.min.js"></script>
+
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+<!-------------------------start---------参数对话框---------------打开参数配置页面 调用openDialog('config-1')------------------------------>
+<div id="dialog" class="dialog-container" >
+    <div class="dialog-content">
+      <span onclick="closeDialog()" class="close">&times;</span>
+      <div class="steps-container">
+        <span id="step-1" class="step">Step 1</span>
+        <span id="step-2" class="step">Step 2</span>
+        <span id="step-3" class="step">Step 3</span>
+      </div>
+      <div id="config-1" class="config-item">
+        <h3 class="config-heading">Configuration 1</h3>
+        <form id="myForm1"></form>
+        <button onclick="switchConfig('config-1', 'config-2')">Next</button>
+      </div>
+  
+      <div id="config-2" class="config-item">
+        <h3 class="config-heading">Configuration 2</h3>
+        <form id="myForm2"></form>
+        <button onclick="switchConfig('config-2', 'config-1')">Previous</button>
+        <button onclick="switchConfig('config-2', 'config-3')">Next</button>
+      </div>
+  
+      <div id="config-3" class="config-item">
+        <h3 class="config-heading">Configuration 3</h3>
+        <form id="myForm3"></form>
+        <button onclick="switchConfig('config-3', 'config-2')">Previous</button>
+        <button id="sendButton"onclick="finishDialog()">Finish</button>
+      </div>
+    </div>
+  </div>
+<!-------------------------end---------参数对话框--------------------------------------------->
+
+
+
+
+{% endblock %}
+
+
+
+
+
+<script src="../static/js/dialog.js"></script>
+
+{% block endscript %}
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{%extends 'base.html'%}

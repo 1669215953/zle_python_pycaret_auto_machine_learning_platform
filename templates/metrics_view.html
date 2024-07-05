@@ -1,0 +1,159 @@
+{%extends 'base.html'%}
+
+
+{% block content %}
+
+
+
+  <div id="card-body" style="display: flex; flex-wrap: wrap; margin-left: 0px;">
+        <div id="table-container" style="width: 100%; height: 600px; margin-bottom: 50px"></div>
+    </div>
+
+<style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+
+<script>
+
+var divElement = document.getElementById('card-body');
+
+fetch('http://localhost:5000/api/metrics/file_list')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    var fileList = data; // 将文件名列表存储在JavaScript数组中
+
+    // 在控制台打印文件名列表
+    console.log(fileList);
+
+    fileList.forEach(function(filename) {
+      var imgElement = document.createElement('img');
+      imgElement.src = 'http://localhost:5000/api/metrics/' + filename;
+      imgElement.style.width = '500px';
+      imgElement.style.height = 'auto'; // 保持宽高比例
+      imgElement.style.marginBottom = '40px';
+      imgElement.style.marginLeft = '100px'; // 可以根据需要调整间距
+      divElement.appendChild(imgElement);
+    });
+  })
+  .catch(function(error) {
+    console.log('Error:', error);
+  });
+
+
+var compare_models;
+fetch('/api/get_model_info')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    console.log(data.MLinfo.compare_models_data[0]);
+    var valuesArray = Object.values(data.MLinfo.compare_models_data[0]);
+    compare_models = data.MLinfo.compare_models_data;
+    console.log(compare_models);
+    console.log(valuesArray);
+
+    var dataset = [
+      {
+        dimensions: ['model', 'Accuracy', 'AUC', 'Recall', 'Prec.', 'F1', 'Kappa','MCC',],
+        model: ['Logistic Regression', 'Ridge Classifier', 'Extra Trees Classifier', 'Naive Bayes', 'K Neighbors Classifier',
+        'Random Forest Classifier', 'Linear Discriminant Analysis', 'Decision Tree Classifier', 'Ada Boost Classifier',
+        'Gradient Boosting Classifier', 'Light Gradient Boosting Machine','Dummy Classifier','Quadratic Discriminant Analysis',
+        'SVM-Linear Kernel'],
+        source: [
+          ['0.917', '0.984', '0.932', '0.945', '0.914','0.977'],
+          ['0.966', '0.943', '0.932', '0.945', '0.914','0.977'],
+          ['0.946', '0.964', '0.932', '0.945', '0.914','0.977'],
+          ['0.916', '0.977', '0.932', '0.945', '0.914','0.977'],
+          ['0.916', '0.976', '0.932', '0.945', '0.914','0.977'],
+          ['0.946', '0.94',  '0.932', '0.945', '0.914','0.977'],
+          ['0.856', '0.974', '0.932', '0.945', '0.914','0.977'],
+          ['0.816', '0.974', '0.932', '0.945', '0.914','0.977'],
+          ['0.996', '0.974', '0.932', '0.945', '0.914','0.977'],
+          ['0.926', '0.974', '0.932', '0.945', '0.914','0.977'],
+          ['0.946', '0.974', '0.932', '0.945', '0.914','0.977'],
+          ['0.976', '0.974', '0.932', '0.945', '0.914','0.977'],
+        ]
+      }
+    ];
+
+
+
+
+// 获取数据集中的表头和数据
+var columns = dataset[0].dimensions;
+var rows = dataset[0].source;
+var modelData = dataset[0].model;
+rows[0] = Object.values(compare_models[0]);
+for (var i = 0; i<12; i++){
+    rows[i] = Object.values(compare_models[i]);
+}
+
+    console.log(rows[0]);
+
+
+
+// 在source数组的每个子数组中添加model数据作为一列数据
+for (var i = 0; i < rows.length; i++) {
+  rows[i].splice(0, 0, modelData[i]);
+}
+
+    // 创建表格元素
+    var table = document.createElement('table');
+
+    table.style.color = 'rgb(250, 232, 250)';
+    table.style.backgroundColor = 'transparent';
+    table.style.borderColor = 'transparent';
+
+    // 创建表头行
+    var headerRow = document.createElement('tr');
+    headerRow.style.borderColor = 'rgb(250, 232, 250)';
+    headerRow.style.backgroundColor = 'rgb(198, 82, 231)';
+    columns.forEach(function(column) {
+      var th = document.createElement('th');
+      th.style.borderColor = 'rgb(250, 232, 250)';
+      th.textContent = column;
+      headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+
+    // 创建数据行
+    rows.forEach(function(row) {
+      var dataRow = document.createElement('tr');
+      row.forEach(function(cellData) {
+        var td = document.createElement('td');
+        td.style.borderColor = 'rgb(250, 232, 250)';
+        td.textContent = cellData;
+        dataRow.appendChild(td);
+      });
+      table.appendChild(dataRow);
+    });
+
+    // 将表格添加到页面
+    var tableContainer = document.getElementById('table-container');
+    tableContainer.appendChild(table);
+
+  })
+  .catch(error => {
+    // 处理错误
+    console.error('Error:', error);
+  });
+
+
+
+
+    </script>
+{% endblock %}
+
+
+
+
+

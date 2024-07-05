@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <!-- layui css -->
+        <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" />
+        <!-- layui js -->
+        <script src="https://www.layuicdn.com/layui-v2.5.6/layui.js"></script>
+        <!-- 下载地址 https://gitee.com/maplemei/xm-select/attach_files/591517/download/xm-select-v1.2.2.zip -->
+        <script src="https://maplemei.gitee.io/xm-select/xm-select.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body style="min-height: 1000px;">
+        <div class="layui-container">
+            <!-- 拷贝整个.layui-card 即可 -->
+            <div class="layui-card" id="userinfo">
+                <div class="layui-card-header">下拉框多选:默认选中,远程搜索等常用参数</div>
+         
+                      
+                            <div id="demo1"></div>
+                
+                    <script>
+                       
+                         var options = {
+                                el: '#demo1',
+                                name: 'xmselectName',//表单的name属性
+                                layVerify: 'required',//必填项
+                                //layVerType: 'tips',//提示类型 同layui
+                                tips: '你喜欢什么水果呢?傻瓜教程',
+                                toolbar: {//工具条,全选,清空,反选,自定义
+                                    show: true,
+                                    list: [ 
+                                        'ALL', 
+                                        'CLEAR', 
+                                        'REVERSE',
+                                        {
+                                            name: '自定义',
+                                            icon: 'el-icon-star-off',
+                                            method(data){
+                                                alert('我是自定义的');
+                                            }
+                                        } 
+                                    ]
+                                },
+                                data: [],
+                                //initValue: ['shuiguo','shucai'],//默认初始化,也可以数据中selected属性
+                                //language: 'zn',//语言包
+                                //filterable: true,//搜索功能
+                                //autoRow: true,//选项过多,自动换行
+                                // repeat: true,//是否支持重复选择
+                                //max: 2,//最多选择2个
+                                // template({ item, sels, name, value }){
+                                //    //template:自定义下拉框的模板
+                                //     return item.name  + '<span style="position: absolute; right: 10px; color: #8799a3">'+value+'</span>' 
+                                // },
+                        };
+                        var demo1 = xmSelect.render(options)
+                        setTimeout(function(){
+                            //假设data是ajax 异步获取的
+                            var data =[
+                                //selected属性可以初始化下拉框
+                                //{name: '水果', value:'shuiguo',selected:true, disabled: true},
+                                {name: '水果', value:'shuiguo',disabled: true},
+                                {name: '蔬菜', value: 'shucai'},
+                                {name: '桌子', value: 'zhuozi'},
+                                {name: '北京', value: 'beijing'},
+                            ];
+                            //模拟通过ajax 获取json数据,异步更新多选下拉框的值
+                            demo1.update({data: data})
+                        },100);
+                    </script>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
